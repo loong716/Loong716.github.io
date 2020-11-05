@@ -2,13 +2,16 @@
 title: 从SUCTF 2019 CheckIn 浅谈.user.ini的利用
 author: Loong716
 date: 2019-08-29 14:10:00 +0800
-categories: [Web, CTF]
+categories: [CTF]
 tags: [File Upload]
 ---
 
 文章首发于先知社区
 
 https://xz.aliyun.com/t/6091
+
+* toc
+{:toc}
 
 # 前言
 

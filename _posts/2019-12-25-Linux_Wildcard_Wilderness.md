@@ -3,7 +3,7 @@ title: Linux提权鸡肋小trick——Wildcard Wilderness
 author: Loong716
 date: 2019-12-25 14:10:00 +0800
 categories: [Pentest]
-tags: [privilege elevation]
+tags: [Privilege Elevation]
 ---
 
 * toc
