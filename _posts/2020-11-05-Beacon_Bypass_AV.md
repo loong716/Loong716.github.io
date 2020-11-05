@@ -14,7 +14,7 @@ tags: [Bypass-AntiVirus]
 
 ## AES+Base64
 
-shellcode采用AES+Base64加密，相关代码编码or加密代码可自己实现，也可以用一些现成的
+shellcode采用AES+Base64处理，相关代码编码or加密代码可自己实现，也可以用一些现成的
 
 ![1604558201876.png](https://i.loli.net/2020/11/05/57E9exYBR3ZbgPf.png)
 
