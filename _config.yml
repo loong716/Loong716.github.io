@@ -22,7 +22,7 @@ url: 'protocol://domain'
 
 author: Loong716                  # change to your full name
 
-avatar: /assets/img/sample/avatar.jpg   # support internet resources
+avatar: /assets/img/sample/avatar.png   # support internet resources
 
 github:
   username: github_username             # change to your github username
