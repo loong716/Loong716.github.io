@@ -3,7 +3,7 @@ title: Cobalt Strike Beacon Bypass AV
 author: Loong716
 date: 2020-11-05 14:10:00 +0800
 categories: [Pentest]
-tags: [Bypass-AntiVirus]
+tags: [Bypass_AntiVirus]
 ---
 
 

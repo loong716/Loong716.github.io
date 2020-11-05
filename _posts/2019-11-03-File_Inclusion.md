@@ -3,7 +3,7 @@ title: File Inclusion Summary
 author: Loong716
 date: 2019-11-03 14:10:00 +0800
 categories: [Web]
-tags: [File Inclusion]
+tags: [File_Inclusion]
 ---
 
 **文件包含(File Inclusion)**顾名思义就是让代码去包含一个文件，其实就是在编写代码时“引用”其他文件的代码。以PHP为例，php的文件包含相关函数都是无论其参数的扩展名是什么，都会将其内容作为php代码解析，这可能就会造成任意的php代码执行。

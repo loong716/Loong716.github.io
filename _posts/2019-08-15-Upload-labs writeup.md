@@ -3,7 +3,7 @@ title: upload-labs writeup
 author: Loong716
 date: 2019-08-15 14:10:00 +0800
 categories: [Web]
-tags: [File Upload]
+tags: [File_Upload]
 ---
 
 > upload-labs是一个使用php语言编写的，专门收集渗透测试和CTF中遇到的各种上传漏洞的靶场。旨在帮助大家对上传漏洞有一个全面的了解。目前一共20关，每一关都包含着不同上传方式。
