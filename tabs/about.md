@@ -15,9 +15,9 @@ title: About
 
 # Friends
 
-+ NNULLULL: http://nnullull.cn/
-+ y1nhui: http://www.y1nhui.com
-+ ghtwf01: http://www.ghtwf01.cn
-+ threezh1: https://threezh1.com/
-+ p2hm1n: https://p2hm1n.com/
-+ theseus: http://theseus.top/
++ [NNULLULL](http://nnullull.cn/)
++ [y1nhui](http://www.y1nhui.com)
++ [ghtwf01](http://www.ghtwf01.cn)
++ [threezh1](https://threezh1.com/)
++ [p2hm1n](https://p2hm1n.com/)
++ [theseus](http://theseus.top/)
