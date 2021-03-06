@@ -6,7 +6,8 @@ categories: [Pentest]
 tags: [Database]
 ---
 
-[toc]
+* toc
+{:toc}
 
 ## 前言
 
@@ -362,23 +363,7 @@ exec SYS.DATE_PROC();
 
 ![1609839627702.png](https://i.loli.net/2021/03/06/OAMHQTVwstbRxkm.png)
 
-### Summary
 
-一般PL/SQL注入利用的条件：
-
-+ 存在注入的PL/SQL属于高权限用户（一般关注SYS），且以definer权限执行
-
-
-对用户权限的要求：
-
-+ 如果用户没有`CREATE PROCEDURE`权限，则需要寻找数据库已有的辅助注入函数
-+ 如果用户有`CREATE PROCEDURE`，则可以自己创建辅助注入函数
-
-如果没有辅助注入函数的话：
-
-+ 如果注入点是在`execute immediate`后的PL/SQL语句中，那么可以考虑直接注入匿名PL/SQL语句块
-+ 如果存在注入的是`insert`、`delete`、`update`这三种类型的语句，那么我们就可以利用现有的语句进行增删改操作，特别是insert情况下可以通过将当前用户插入到`SYS.SYSAUTH$`表中，同样可获得DBA权限
-+ 如果存在注入的是`select`这种类型的语句，那么我们就只能对数据库进行查询操作，如`UNION SELECT PASSWORD FROM SYS.USER$`，当然前提是它有输出
 
 ## 权限提升
 
@@ -968,6 +953,26 @@ SELECT DBMS_JAVA_TEST.FUNCALL('oracle/aurora/util/Wrapper','main','/bin/bash','-
 ## Web层面的利用
 
 前面提到过Oracle并不支持堆叠注入，但是前面介绍的`dbms_xmlquery.newcontext`是可以执行PL/SQL语句的，因此当我们遇到Oracle的SQL注入点时，就可以构造执行`dbms_xmlquery.newcontext`的语句来进行命令执行
+
+### 总结
+
+一般PL/SQL注入利用的条件：
+
++ 存在注入的PL/SQL属于高权限用户（一般关注SYS），且以definer权限执行
+
+
+对用户权限的要求：
+
++ 如果用户没有`CREATE PROCEDURE`权限，则需要寻找数据库已有的辅助注入函数
++ 如果用户有`CREATE PROCEDURE`，则可以自己创建辅助注入函数
+
+如果没有辅助注入函数的话：
+
++ 如果注入点是在`execute immediate`后的PL/SQL语句中，那么可以考虑直接注入匿名PL/SQL语句块
++ 如果存在注入的是`insert`、`delete`、`update`这三种类型的语句，那么我们就可以利用现有的语句进行增删改操作，特别是insert情况下可以通过将当前用户插入到`SYS.SYSAUTH$`表中，同样可获得DBA权限
++ 如果存在注入的是`select`这种类型的语句，那么我们就只能对数据库进行查询操作，如`UNION SELECT PASSWORD FROM SYS.USER$`，当然前提是它有输出
+
+当遇到Web层面的SQL注入时，需要构造`dbms_xmlquery.newcontext`执行PL/SQL的语句来进行命令执行
 
 ## 参考
 
