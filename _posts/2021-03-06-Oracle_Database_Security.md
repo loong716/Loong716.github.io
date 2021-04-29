@@ -74,7 +74,7 @@ select * from session_roles;
 
 当前用户被授予的角色:
 
-```sql
+``` sql
 select * from user_role_privs;
 ```
 
@@ -86,25 +86,25 @@ select t.DEFAULT_ROLE from user_role_privs t where t.granted_role='DBA';
 
 当前用户所拥有的全部权限：
 
-```sql
+``` sql
 select * from session_privs;
 ```
 
 当前用户的系统权限:
 
-```sql
+``` sql
 select * from user_sys_privs;
 ```
 
 当前用户的表级权限:
 
-```
+``` sql
 select * from user_tab_privs;
 ```
 
 查询某个用户所拥有的系统权限:
 
-```
+``` sql
 select * from dba_sys_privs;
 ```
 
