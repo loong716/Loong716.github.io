@@ -9,7 +9,7 @@ tags: [Privilege_Elevation]
 * toc
 {:toc}
 
-## Demo
+## 0x00 Demo
 
 首先我们在测试目录下创建了三个文件`test1`、`test2`、`--help`，其内容不影响测试
 
@@ -33,7 +33,7 @@ tags: [Privilege_Elevation]
 
 通过利用该特性，再配合一些命令的特殊参数，我们就可以做一些有意思的操作
 
-### Why?
+### 1. Why?
 
 以执行`rsync`为例，我们使用`strace`来看一下系统的调用过程，先看一下`execve()`函数的说明：
 
@@ -58,11 +58,11 @@ main()
 ![Alt text](https://i.loli.net/2019/12/25/we97DMRaEIbrFhB.png)
 
 
-## Exploit chown/chmod
+## 0x01 Exploit chown/chmod
 
 `chown`/`chmod`命令的相关利用
 
-### File owner/privilege hijacking
+### 1. File owner/privilege hijacking
 
 使用`chown`的`--reference`参数配合`Wildcard Wilderness`可以达到文件所属用户劫持的效果，先在看该命令和参数的定义：
 
@@ -85,7 +85,7 @@ main()
 **PS：**`chmod`命令同样拥有`--reference`参数，利用方法不再赘述
 
 
-## Exploit tar
+## 0x02 Exploit tar
 
 以下均为`tar`命令在存在**root权限的计划任务**时的利用，后两个demo复现时没有创建计划任务，只复现一下利用流程
 
@@ -93,7 +93,7 @@ main()
 **注意：**`tar`命令利用`--checkpoint-action`和`--checkpoint`这两个参数时要求**被压缩的目标文件/目录**不能为绝对路径
 
 
-### Reverse shell
+### 1. Reverse shell
 
 以`lin.security`的靶机为例，利用root权限的计划任务配合`tar`的`--checkpoint`和`--checkpoint-action`参数来反弹shell，完成权限提升
 
@@ -117,7 +117,7 @@ main()
 
 ![Alt text](https://i.loli.net/2019/12/25/jeKwvAGoEyfJSCs.png)
 
-### Add Sudoers
+### 2. Add Sudoers
 
 首先创建一个修改`/etc/sudoers`内容为允许hacker用户无密码sudo执行任何命令的shell脚本，然后使用`tar`的两个参数执行该shell脚本
 
@@ -132,7 +132,7 @@ main()
 ![Alt text](https://i.loli.net/2019/12/25/ODgjIbC8l4aPMsd.png)
 
 
-### Give SUID permission to system binaries
+### 3. Give SUID permission to system binaries
 
 首先创建一个将`/usr/bin/find`赋予SUID的shell脚本，然后还是使用`tar`的这两个参数去执行这个脚本
 
@@ -158,7 +158,7 @@ main()
 
 ![Alt text](https://i.loli.net/2019/12/25/9JyNqXp36Yo1Qkn.png)
 
-## Exploit rsync
+## 0x03 Exploit rsync
 
 > rsync命令是一个远程数据同步工具，可通过LAN/WAN快速同步多台主机间的文件。rsync使用所谓的“rsync算法”来使本地和远程两个主机之间的文件达到同步，这个算法只传送两个文件的不同部分，而不是每次都整份传送，因此速度相当快。
 
@@ -167,7 +167,7 @@ main()
 ![Alt text](https://i.loli.net/2019/12/25/vYsozX8iKlITtEy.png)
 
 
-### Add root user to /etc/passwd
+### 1. Add root user to /etc/passwd
 
 创建一个向`/etc/passwd`中写入内容的shel脚本，这里我只是写了一个'test'，在实际中你可以尝试写入一个id为0的用户，这样就相当于写入一个root权限的用户
 
