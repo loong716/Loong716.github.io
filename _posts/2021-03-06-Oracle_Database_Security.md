@@ -48,7 +48,7 @@ oracle中有几个常见的预定义角色：
 
 一般普通用户拥有connect、resource角色，而管理员拥有connect、resource、dba角色
 
-### 实体权限
+### 2. 实体权限
 
 简单说就是用户对表、视图、存储过程等有什么权限
 
@@ -57,7 +57,7 @@ oracle中有几个常见的预定义角色：
 + 过程、函数、程序包权限：EXECUTE、DEBUG
 
 
-### 2. 权限查询
+### 3. 权限查询
 
 查看所有角色：
 
@@ -128,7 +128,7 @@ SELECT TYPE_NAME, NAME, ACTION FROM user_java_policy WHERE grantee_name = 'TEST4
 ```
 
 
-### 3. 权限更改
+### 4. 权限更改
 
 可以通过`GRANT` 和 `REVOKE` 命令来对账户进行权限的授予和撤回，一般这些操作会由DBA用户(SYS用户和SYSTEM用户)来执行
 
