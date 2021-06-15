@@ -3,7 +3,7 @@ title: DozerCTF2021 简单域渗透II Writeup
 author: Loong716
 date: 2021-06-01 14:10:00 +0800
 categories: [CTF]
-tags: []
+tags: [CTF]
 ---
 
 
