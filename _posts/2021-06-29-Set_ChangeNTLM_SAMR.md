@@ -6,7 +6,7 @@ categories: [Pentest]
 tags: [Pentest]
 ---
 
-文章首发于安全客，原文地址：[利用MS-SAMR协议修改/重置用户密码](https://www.anquanke.com/post/id/245482)
+文章首发于中安网星公众号，原文地址：[利用MS-SAMR协议修改/重置用户密码](https://mp.weixin.qq.com/s/QvdCtlWtn78FKXkwy9_CrA)
 
 * toc
 {:toc}
