@@ -3,7 +3,7 @@ title: 利用MS-SAMR协议修改/重置用户密码
 author: Loong716
 date: 2021-06-29 14:10:00 +0800
 categories: [Pentest]
-tags: [Pentest]
+tags: [RPC]
 ---
 
 文章首发于中安网星公众号，原文地址：[利用MS-SAMR协议修改/重置用户密码](https://mp.weixin.qq.com/s/QvdCtlWtn78FKXkwy9_CrA)
