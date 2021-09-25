@@ -1,5 +1,5 @@
 ---
-title: 从mimikatz学习Windows安全之访问控制模型（一）
+title: 从mimikatz学习Windows安全之访问控制模型（三）
 author: Loong716
 date: 2021-09-25 14:10:00 +0800
 categories: [Pentest]
